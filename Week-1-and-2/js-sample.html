@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p id="demo"></p>
+    <p id="date-time"></p>
+
+    <button onclick="toggleLightBulb()">On/Off LightBulb Switch</button>
+    <br><br>
+    <img alt="LightBulb" id="lightbulb" src="https://www.w3schools.com/js/pic_bulboff.gif" width="100" height="180">
+
+    <script>
+        const BULB_OFF = "https://www.w3schools.com/js/pic_bulboff.gif";
+        const BULB_ON = "https://www.w3schools.com/js/pic_bulbon.gif";
+
+        function myFunction() {
+            return "Hello World!";
+        }
+        document.getElementById("demo").innerHTML = myFunction();
+
+        const d = new Date();
+        document.getElementById("date-time").innerHTML = d.toString();
+
+        function toggleLightBulb() {
+            const img = document.getElementById("lightbulb");
+            const isOn = img.src.includes("pic_bulbon.gif");
+            img.src = isOn ? BULB_OFF : BULB_ON;
+        }
+    </script>
+</body>
+
+</html>

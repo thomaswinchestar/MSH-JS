@@ -1,0 +1,37 @@
+/*CJS - > Common JS
+const express = require('express');
+const app = express();
+
+ES modules - > import/export
+import express from 'express';
+const app = express();
+
+ESM - > EcmaScript Modules
+import express from 'express';
+const app = express();
+
+node 24 - > support ESM by default */
+
+/*
+innerHTML / innerText - > DOM manipulation
+document.write() - > 
+
+FE/BE / FullStack - > Frontend / Backend / FullStack
+
+Intern/Junior - > Beginner level developer (0-2 years experience) html,css,js, basic understanding of frameworks/libraries (react,angular,vue,node,express
+Mid-level - > 2-5 years experience, deeper understanding of frameworks/libraries, able to work on complex projects, knowledge of databases, version control (git)
+Senior - > 5+ years experience, expert in multiple frameworks/libraries, able to lead projects, mentor junior developers, strong understanding of architecture and design patterns, DevOps knowledge
+Tech Lead/Architect/Solution Architect - > 8+ years experience, responsible for overall technical vision of projects, designing system architecture, making high-level decisions, leading development teams, ensuring best practices and code quality directly writes to the document stream, can overwrite existing content
+Engineering Manager/CTO - > 10+ years experience, focuses on management and strategy rather than coding, oversees multiple teams, responsible for hiring, budgeting, and aligning technology with business goals
+
+server
+fe app -> frontend application
+ssh pub key
+ssh pub key - github personal 
+company githubb account
+
+ssh pub 
+chmod 600 
+
+
+*/
