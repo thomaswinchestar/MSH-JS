@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Control Flow & Loops</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            line-height: 1.5;
+        }
+        
+        main {
+            max-width: 900px;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+        
+        .demo {
+            border: 1px solid #ddd;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+        }
+        
+        .demo label {
+            display: inline-block;
+            margin-top: 6px;
+        }
+        
+        .demo input,
+        .demo select,
+        .demo textarea {
+            margin-top: 6px;
+            max-width: 100%;
+        }
+        
+        .demo button {
+            margin-top: 8px;
+        }
+        
+        .demo-output {
+            margin-top: 8px;
+            font-weight: 600;
+        }
+        
+        .read {
+            opacity: 0.7;
+            text-decoration: line-through;
+        }
+
+        .ml-8 {
+            margin-left: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <h1>Week 6 — JavaScript Control Flow & Loops</h1>
+        <p>
+            This page is both: (1) short notes about the concepts, and (2) a playground. Open DevTools Console and run the demos.
+        </p>
+
+        <h2>How to test</h2>
+        <ol>
+            <li>Open this file in the browser</li>
+            <li>Open DevTools → Console</li>
+            <li>Type <code>week6.help()</code> or <code>week6.runAll()</code></li>
+        </ol>
+
+        <h2>Control Flow (Decision Making)</h2>
+        <ul>
+            <li><strong>Blocks</strong>: Use <code>{ }</code> to group statements. Prefer blocks even for one-line <code>if</code>.</li>
+            <li><strong>if / else if / else</strong>: pick one path based on conditions (login checks, form validation, permissions).</li>
+            <li><strong>switch</strong>: clean for “one value, many cases” (menus, command handlers, status codes).</li>
+            <li><strong>ternary</strong> <code>condition ? a : b</code>: best for small decisions (display labels, simple mapping).</li>
+            <li><strong>try / catch / finally</strong>: handle unexpected failures gracefully (parsing JSON, calling APIs).</li>
+        </ul>
+
+        <h2>Loops (Repetition)</h2>
+        <ul>
+            <li><strong>while</strong>: repeat while a condition stays true (keep asking until valid input, polling).</li>
+            <li><strong>do...while</strong>: like <code>while</code>, but runs at least once (menus, retry loops).</li>
+            <li><strong>for</strong>: best when you have a clear start/end counter (indexes, fixed steps).</li>
+            <li><strong>break</strong>: exit the loop early (found the item, stop scanning).</li>
+            <li><strong>continue</strong>: skip just the current iteration (ignore invalid items, skip negatives).</li>
+            <li><strong>for...in</strong>: iterates over <em>enumerable property names</em> of an object (often for debugging). Not ideal for arrays.</li>
+            <li><strong>for...of</strong>: iterates over <em>values</em> of an iterable (arrays, strings, maps, sets).</li>
+        </ul>
+
+        <h2>Iterable Protocol (Why for...of works)</h2>
+        <p>
+            Something is “iterable” if it has a <code>[Symbol.iterator]()</code> method that returns an iterator. Arrays and strings already have it. Plain objects don’t.
+        </p>
+
+        <h2>Small DOM Examples</h2>
+        <p>
+            These are tiny real DOM use-cases where loops are common. You can click the buttons, and you can also run <code>week6.dom()</code> in the console.
+        </p>
+
+        <section class="demo" aria-labelledby="demo-ifelse-title">
+            <h3 id="demo-ifelse-title">DOM Example — if/else + ternary (Authorization label)</h3>
+            <p>Real use case: show “Authorized / Not Authorized” based on age.</p>
+            <label for="ageInput">Age:</label>
+            <input id="ageInput" type="number" min="0" placeholder="e.g. 18">
+            <br>
+            <button id="btnCheckAge" type="button">Check status</button>
+            <div id="ageOutput" class="demo-output"></div>
+        </section>
+
+        <section class="demo" aria-labelledby="demo-switch-title">
+            <h3 id="demo-switch-title">DOM Example — switch (Traffic light decision)</h3>
+            <p>Real use case: map one selected value to an action message.</p>
+            <label for="trafficLight">Traffic light:</label>
+            <select id="trafficLight">
+                <option value="red">Red</option>
+                <option value="yellow">Yellow</option>
+                <option value="green" selected>Green</option>
+            </select>
+            <br>
+            <button id="btnTraffic" type="button">What should I do?</button>
+            <div id="trafficOutput" class="demo-output"></div>
+        </section>
+
+        <section class="demo" aria-labelledby="demo-select-title">
+            <h3 id="demo-select-title">DOM Example 1 — Count selected options (for loop)</h3>
+            <p>Select some options and click the button:</p>
+            <form name="selectForm">
+                <label for="musicTypes">Choose music types:</label><br>
+                <select id="musicTypes" name="musicTypes" multiple size="6">
+                    <option selected>R &amp;B</option>
+                    <option>Jazz</option>
+                    <option>Blues</option>
+                    <option>New Age</option>
+                    <option>Classical</option>
+                    <option>Opera</option>
+                </select>
+                <br>
+                <button id="btnCountSelected" type="button">How many are selected?</button>
+                <div id="countSelectedOutput" class="demo-output"></div>
+            </form>
+        </section>
+
+        <section class="demo" aria-labelledby="demo-article-title">
+            <h3 id="demo-article-title">DOM Example 2 — Mark paragraphs as read (for...of)</h3>
+            <p>Click to add a <code>read</code> class to each paragraph inside the article.</p>
+            <article id="demoArticle">
+                <p>Paragraph A: This will become “read”.</p>
+                <p>Paragraph B: This will become “read”.</p>
+                <p>Paragraph C: This will become “read”.</p>
+            </article>
+            <button id="btnMarkRead" type="button">Mark article paragraphs as read</button>
+            <div id="markReadOutput" class="demo-output"></div>
+        </section>
+
+        <section class="demo" aria-labelledby="demo-trycatch-title">
+            <h3 id="demo-trycatch-title">DOM Example — try/catch (Parse JSON safely)</h3>
+            <p>Real use case: handle invalid user input without crashing the page.</p>
+            <label for="jsonInput">JSON input:</label><br>
+            <textarea id="jsonInput" rows="4" cols="50">{"name":"Alice","age":22}</textarea>
+            <br>
+            <button id="btnParseJson" type="button">Parse JSON</button>
+            <div id="jsonOutput" class="demo-output"></div>
+        </section>
+
+        <section class="demo" aria-labelledby="demo-loops-title">
+            <h3 id="demo-loops-title">DOM Example — while vs do...while (Countdown)</h3>
+            <p>Real use case: run an action until a condition becomes false.</p>
+            <label for="countdownStart">Start number (0–20):</label>
+            <input id="countdownStart" type="number" min="0" max="20" value="5">
+            <br>
+            <button id="btnWhileCountdown" type="button">Run while countdown</button>
+            <button id="btnDoWhileCountdown" type="button">Run do...while countdown</button>
+            <div id="countdownOutput" class="demo-output"></div>
+        </section>
+
+        <section class="demo" aria-labelledby="demo-breakcontinue-title">
+            <h3 id="demo-breakcontinue-title">DOM Example — break &amp; continue (Process numbers)</h3>
+            <p>
+                Rule: skip invalid values (continue) and stop when a negative number is found (break).
+            </p>
+            <label for="numbersInput">Numbers (comma separated):</label><br>
+            <input id="numbersInput" type="text" value="11, 22, x, 33, -1, 44">
+            <br>
+            <button id="btnProcessNumbers" type="button">Process</button>
+            <div id="numbersOutput" class="demo-output"></div>
+        </section>
+
+        <section class="demo" aria-labelledby="demo-forin-title">
+            <h3 id="demo-forin-title">DOM Example — for...in (Render object properties)</h3>
+            <p>Real use case: show an object as key/value pairs (own properties only).</p>
+            <button id="btnRenderProfile" type="button">Render profile</button>
+            <div id="profileOutput" class="demo-output"></div>
+        </section>
+
+        <section class="demo" aria-labelledby="demo-iterable-title">
+            <h3 id="demo-iterable-title">DOM Example — Iterable protocol (Render a custom range)</h3>
+            <p>Real use case: generate UI items from a custom iterable using <code>for...of</code>.</p>
+            <label for="rangeStart">Start:</label>
+            <input id="rangeStart" type="number" value="3">
+            <label for="rangeEnd" class="ml-8">End:</label>
+            <input id="rangeEnd" type="number" value="7">
+            <br>
+            <button id="btnRenderRange" type="button">Render range</button>
+            <ul id="rangeList"></ul>
+            <div id="rangeOutput" class="demo-output"></div>
+        </section>
+
+        <h2>References (MDN)</h2>
+        <ul>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Control_flow_and_error_handling" target="_blank" rel="noreferrer noopener">Control flow and error handling</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration" target="_blank" rel="noreferrer noopener">Loops and iteration</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/break" target="_blank" rel="noreferrer noopener">break</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/continue" target="_blank" rel="noreferrer noopener">continue</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols#the_iterable_protocol" target="_blank" rel="noreferrer noopener">Iterable protocol</a></li>
+        </ul>
+    </main>
+
+    <script>
+        "use strict";
+
+        // Week 6 console playground:
+        // Open DevTools console and use `week6.help()`.
+
+        function title(text) {
+            console.log("\n=== " + text + " ===");
+        }
+
+        function deepCopy(value) {
+            return JSON.parse(JSON.stringify(value));
+        }
+
+        // --- Sample data used in multiple demos ---
+        const peopleSample = [{
+            name: "Alice"
+        }, {
+            name: "Bob",
+            gender: "M"
+        }, {
+            name: "Tom",
+            gender: "m"
+        }, {
+            name: "Mary",
+            gender: "F"
+        }, {
+            name: "Alex",
+            gender: "f"
+        }, {
+            name: "Someone"
+        }];
+
+        // --- Control Flow demos ---
+        function normalizeGenderIfElse(people) {
+            // Real use case: normalize inconsistent user input for reporting/UI.
+            return people.map(function(person) {
+                const p = {
+                    ...person
+                };
+
+                if (p.gender === "m" || p.gender === "M") {
+                    p.gender = "Male";
+                } else if (p.gender === "f" || p.gender === "F") {
+                    p.gender = "Female";
+                } else {
+                    p.gender = "Unknown";
+                }
+
+                return p;
+            });
+        }
+
+        function normalizeGenderSwitch(people) {
+            return people.map(function(person) {
+                const p = {
+                    ...person
+                };
+
+                switch (p.gender) {
+                    case "m":
+                    case "M":
+                        p.gender = "Male";
+                        break;
+                    case "f":
+                    case "F":
+                        p.gender = "Female";
+                        break;
+                    default:
+                        p.gender = "Unknown";
+                }
+                return p;
+            });
+        }
+
+        function ternaryAuthorization(user) {
+            // Real use case: quick label for UI.
+            return user.age >= 18 ? "Authorized" : "Not Authorized";
+        }
+
+        function tryCatchJsonParse(jsonString) {
+            // Real use case: safely parse data (API/localStorage/user input).
+            try {
+                const parsed = JSON.parse(jsonString);
+                return {
+                    ok: true,
+                    value: parsed
+                };
+            } catch (err) {
+                console.error("JSON parse failed:", err.message);
+                return {
+                    ok: false,
+                    error: err.message
+                };
+            } finally {
+                // finally runs whether parse succeeds or fails
+                // useful for cleanup / end-of-operation logging
+            }
+        }
+
+        // --- Loop demos ---
+        function whileFindFirstNegative(nums) {
+            // Real use case: scan data until a condition is met.
+            let i = 0;
+            while (i < nums.length) {
+                if (nums[i] < 0) return i; // early return = stop scanning
+                i++;
+            }
+            return -1;
+        }
+
+        function doWhileRetrySimulation(inputs) {
+            // Real use case: keep asking until valid input.
+            // (We simulate prompts with an array of inputs.)
+            let attempts = 0;
+            let value;
+            do {
+                value = inputs[attempts];
+                attempts++;
+            } while ((value === undefined || value === "") && attempts < inputs.length);
+
+            return {
+                attempts,
+                value
+            };
+        }
+
+        function forSum(nums) {
+            // Real use case: compute totals.
+            let total = 0;
+            for (let i = 0; i < nums.length; i++) {
+                total += nums[i];
+            }
+            return total;
+        }
+
+        function breakAndContinueDemo(nums) {
+            // Real use case:
+            // - break when you detect a "stop" condition
+            // - continue to skip invalid items
+            const kept = [];
+            for (let i = 0; i < nums.length; i++) {
+                const n = nums[i];
+                if (n === null || n === undefined) continue; // skip missing values
+                if (n < 0) break; // stop processing at first negative
+                kept.push(n);
+            }
+            return kept;
+        }
+
+        function forInObjectDemo(user) {
+            // for...in gives property names (keys).
+            const pairs = [];
+            for (const key in user) {
+                if (Object.hasOwn(user, key)) {
+                    pairs.push(key + ": " + user[key]);
+                }
+            }
+            return pairs;
+        }
+
+        function forOfIterableDemo(values) {
+            // for...of gives values.
+            const out = [];
+            for (const v of values) {
+                out.push(v);
+            }
+            return out;
+        }
+
+        function makeRangeIterable(start, endInclusive) {
+            // Custom iterable using the iterable protocol.
+            return {
+                [Symbol.iterator]() {
+                    let current = start;
+                    return {
+                        next() {
+                            if (current <= endInclusive) {
+                                return {
+                                    value: current++,
+                                    done: false
+                                };
+                            }
+                            return {
+                                value: undefined,
+                                done: true
+                            };
+                        }
+                    };
+                }
+            };
+        }
+
+        // --- Small DOM demos ---
+        function countSelected(selectElement) {
+            // Real use case: count selected items in a <select multiple>.
+            let numberSelected = 0;
+            for (let i = 0; i < selectElement.options.length; i++) {
+                if (selectElement.options[i].selected) {
+                    numberSelected++;
+                }
+            }
+            return numberSelected;
+        }
+
+        function markArticleParagraphsRead(articleElement) {
+            // Real use case: iterate a NodeList (querySelectorAll) and update DOM.
+            const paragraphs = articleElement.querySelectorAll("p");
+            let changed = 0;
+            for (const p of paragraphs) {
+                if (p.classList.contains("read")) continue;
+                p.classList.add("read");
+                changed++;
+            }
+            return {
+                total: paragraphs.length,
+                changed
+            };
+        }
+
+        function initDomDemos() {
+            const select = document.getElementById("musicTypes");
+            const btnCount = document.getElementById("btnCountSelected");
+            const outCount = document.getElementById("countSelectedOutput");
+
+            if (select && btnCount && outCount) {
+                btnCount.addEventListener("click", function() {
+                    const n = countSelected(select);
+                    outCount.textContent = "Selected: " + n;
+                    console.log("Selected options:", n);
+                });
+            }
+
+            const article = document.getElementById("demoArticle");
+            const btnRead = document.getElementById("btnMarkRead");
+            const outRead = document.getElementById("markReadOutput");
+
+            if (article && btnRead && outRead) {
+                btnRead.addEventListener("click", function() {
+                    const result = markArticleParagraphsRead(article);
+                    outRead.textContent = "Marked read: " + result.changed + " / " + result.total;
+                    console.log("Mark read result:", result);
+                });
+            }
+
+            const ageInput = document.getElementById("ageInput");
+            const btnAge = document.getElementById("btnCheckAge");
+            const outAge = document.getElementById("ageOutput");
+            if (ageInput && btnAge && outAge) {
+                btnAge.addEventListener("click", function() {
+                    const age = Number(ageInput.value);
+                    if (!Number.isFinite(age) || age < 0) {
+                        outAge.textContent = "Please enter a valid age.";
+                        return;
+                    }
+                    const status = age >= 18 ? "Authorized" : "Not Authorized";
+                    outAge.textContent = "Status: " + status;
+                });
+            }
+
+            const traffic = document.getElementById("trafficLight");
+            const btnTraffic = document.getElementById("btnTraffic");
+            const outTraffic = document.getElementById("trafficOutput");
+            if (traffic && btnTraffic && outTraffic) {
+                btnTraffic.addEventListener("click", function() {
+                    let msg;
+                    switch (traffic.value) {
+                        case "red":
+                            msg = "Stop";
+                            break;
+                        case "yellow":
+                            msg = "Slow down";
+                            break;
+                        case "green":
+                            msg = "Go";
+                            break;
+                        default:
+                            msg = "Unknown signal";
+                    }
+                    outTraffic.textContent = "Action: " + msg;
+                });
+            }
+
+            const jsonInput = document.getElementById("jsonInput");
+            const btnParse = document.getElementById("btnParseJson");
+            const outJson = document.getElementById("jsonOutput");
+            if (jsonInput && btnParse && outJson) {
+                btnParse.addEventListener("click", function() {
+                    const result = tryCatchJsonParse(jsonInput.value);
+                    outJson.textContent = result.ok ? "OK: " + JSON.stringify(result.value) : "Error: " + result.error;
+                });
+            }
+
+            const countdownStart = document.getElementById("countdownStart");
+            const btnWhile = document.getElementById("btnWhileCountdown");
+            const btnDoWhile = document.getElementById("btnDoWhileCountdown");
+            const outCountdown = document.getElementById("countdownOutput");
+
+            function runCountdown(mode) {
+                const start = Number(countdownStart && countdownStart.value);
+                if (!Number.isFinite(start)) {
+                    outCountdown.textContent = "Please enter a valid start number.";
+                    return;
+                }
+                let n = Math.max(0, Math.min(20, start));
+                const parts = [];
+
+                if (mode === "while") {
+                    while (n >= 0) {
+                        parts.push(String(n));
+                        n--;
+                    }
+                } else {
+                    // do...while runs at least once
+                    do {
+                        parts.push(String(n));
+                        n--;
+                    } while (n >= 0);
+                }
+
+                outCountdown.textContent = parts.join(" → ");
+            }
+            if (btnWhile && outCountdown) {
+                btnWhile.addEventListener("click", function() {
+                    runCountdown("while");
+                });
+            }
+            if (btnDoWhile && outCountdown) {
+                btnDoWhile.addEventListener("click", function() {
+                    runCountdown("doWhile");
+                });
+            }
+
+            const numbersInput = document.getElementById("numbersInput");
+            const btnProcess = document.getElementById("btnProcessNumbers");
+            const outNumbers = document.getElementById("numbersOutput");
+            if (numbersInput && btnProcess && outNumbers) {
+                btnProcess.addEventListener("click", function() {
+                    const raw = numbersInput.value.split(",");
+                    const kept = [];
+                    for (let i = 0; i < raw.length; i++) {
+                        const token = raw[i].trim();
+                        const num = Number(token);
+                        if (!Number.isFinite(num)) continue; // skip invalid
+                        if (num < 0) break; // stop at first negative
+                        kept.push(num);
+                    }
+                    outNumbers.textContent = "Kept: [" + kept.join(", ") + "]";
+                });
+            }
+
+            const btnProfile = document.getElementById("btnRenderProfile");
+            const outProfile = document.getElementById("profileOutput");
+            if (btnProfile && outProfile) {
+                btnProfile.addEventListener("click", function() {
+                    const profile = {
+                        name: "Alice",
+                        age: 22,
+                        role: "Student"
+                    };
+                    const lines = [];
+                    for (const key in profile) {
+                        if (Object.hasOwn(profile, key)) {
+                            lines.push(key + ": " + profile[key]);
+                        }
+                    }
+                    outProfile.textContent = lines.join(" | ");
+                });
+            }
+
+            const rangeStart = document.getElementById("rangeStart");
+            const rangeEnd = document.getElementById("rangeEnd");
+            const btnRange = document.getElementById("btnRenderRange");
+            const list = document.getElementById("rangeList");
+            const outRange = document.getElementById("rangeOutput");
+            if (rangeStart && rangeEnd && btnRange && list && outRange) {
+                btnRange.addEventListener("click", function() {
+                    const start = Number(rangeStart.value);
+                    const end = Number(rangeEnd.value);
+                    if (!Number.isFinite(start) || !Number.isFinite(end)) {
+                        outRange.textContent = "Please enter valid start/end.";
+                        return;
+                    }
+                    list.innerHTML = "";
+                    const from = Math.min(start, end);
+                    const to = Math.max(start, end);
+                    const iterable = makeRangeIterable(from, to);
+                    let count = 0;
+                    for (const v of iterable) {
+                        const li = document.createElement("li");
+                        li.textContent = String(v);
+                        list.appendChild(li);
+                        count++;
+                        if (count >= 50) break; // safety guard
+                    }
+                    outRange.textContent = "Rendered " + count + " item(s).";
+                });
+            }
+        }
+
+        // Expose a simple API for the browser console.
+        window.week6 = {
+            help() {
+                console.log("Week 6 console helpers:");
+                console.log("- week6.runAll()");
+                console.log("- week6.controlFlow()");
+                console.log("- week6.loops()");
+                console.log("- week6.iterables()");
+                console.log("- week6.dom()");
+                console.log("- week6.domAll()");
+                console.log("- week6.tryCatch()\n");
+                console.log("Tip: these demos log output to the console.");
+            },
+
+            controlFlow() {
+                title("Control Flow: if/else vs switch vs ternary");
+                const people = deepCopy(peopleSample);
+                console.log("Original:", people);
+                console.log("If/else normalized:", normalizeGenderIfElse(people));
+                console.log("Switch normalized:", normalizeGenderSwitch(people));
+
+                const user = {
+                    name: "John",
+                    age: 17
+                };
+                console.log("Ternary (age 17):", ternaryAuthorization(user));
+                user.age = 22;
+                console.log("Ternary (age 22):", ternaryAuthorization(user));
+            },
+
+            tryCatch() {
+                title("Error handling: try/catch JSON.parse");
+                console.log("Valid JSON:", tryCatchJsonParse('{"ok": true, "count": 2}'));
+                console.log("Invalid JSON:", tryCatchJsonParse("{ not json }"));
+            },
+
+            loops() {
+                title("Loops: while / do...while / for / break / continue");
+                const nums = [11, 22, null, 33, -1, 44];
+                console.log("Numbers:", nums);
+                console.log("Sum (for):", forSum([1, 2, 3, 4]));
+                console.log("First negative index (while):", whileFindFirstNegative(nums));
+                console.log("Filtered until negative (break/continue):", breakAndContinueDemo(nums));
+                console.log("Retry simulation (do...while):", doWhileRetrySimulation(["", "", "hello"]))
+            },
+
+            iterables() {
+                title("Iteration: for...in vs for...of + iterable protocol");
+
+                const user = {
+                    name: "Bob",
+                    age: 22,
+                    gender: "Male"
+                };
+                console.log("for...in over object keys:", forInObjectDemo(user));
+
+                const users = ["Alice", "Bob", "Tom", "Mary"];
+                console.log("for...of over array values:", forOfIterableDemo(users));
+
+                const word = "hello";
+                console.log("for...of over string:", forOfIterableDemo(word));
+
+                const range = makeRangeIterable(3, 7);
+                console.log("Custom iterable range (3..7):", forOfIterableDemo(range));
+            },
+
+            dom() {
+                title("DOM examples");
+                const select = document.getElementById("musicTypes");
+                const article = document.getElementById("demoArticle");
+
+                if (select) {
+                    console.log("Selected options (for loop):", countSelected(select));
+                } else {
+                    console.log("DOM demo select not found.");
+                }
+
+                if (article) {
+                    console.log("Marking article paragraphs as read...");
+                    console.log(markArticleParagraphsRead(article));
+                } else {
+                    console.log("DOM demo article not found.");
+                }
+            },
+
+            domAll() {
+                title("DOM examples (all)");
+
+                const ageInput = document.getElementById("ageInput");
+                const traffic = document.getElementById("trafficLight");
+                const jsonInput = document.getElementById("jsonInput");
+                const select = document.getElementById("musicTypes");
+                const article = document.getElementById("demoArticle");
+
+                if (ageInput) {
+                    const age = Number(ageInput.value);
+                    console.log("Age status:", Number.isFinite(age) ? (age >= 18 ? "Authorized" : "Not Authorized") : "Invalid age");
+                }
+                if (traffic) {
+                    console.log("Traffic light value:", traffic.value);
+                }
+                if (jsonInput) {
+                    console.log("JSON parse result:", tryCatchJsonParse(jsonInput.value));
+                }
+                if (select) {
+                    console.log("Selected options (for loop):", countSelected(select));
+                }
+                if (article) {
+                    console.log("Mark read result:", markArticleParagraphsRead(article));
+                }
+
+                const numbersInput = document.getElementById("numbersInput");
+                if (numbersInput) {
+                    const raw = numbersInput.value.split(",");
+                    const kept = [];
+                    for (let i = 0; i < raw.length; i++) {
+                        const token = raw[i].trim();
+                        const num = Number(token);
+                        if (!Number.isFinite(num)) continue;
+                        if (num < 0) break;
+                        kept.push(num);
+                    }
+                    console.log("Processed numbers kept:", kept);
+                }
+            },
+
+            runAll() {
+                this.controlFlow();
+                this.tryCatch();
+                this.loops();
+                this.iterables();
+                this.dom();
+            }
+        };
+
+        // Small hint on page load.
+        console.log("Week 6 loaded. Try week6.help() in the console.");
+
+        // Wire up DOM demo buttons.
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initDomDemos);
+        } else {
+            initDomDemos();
+        }
+    </script>
+</body>
+
+</html>
