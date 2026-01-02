@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 5 — JS Arrays & Objects</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            line-height: 1.5;
+            margin: 24px;
+        }
+        
+        main {
+            max-width: 980px;
+        }
+        
+        h1,
+        h2,
+        h3 {
+            margin: 0.75rem 0;
+        }
+        
+        p,
+        li {
+            margin: 0.5rem 0;
+        }
+        
+        code,
+        pre {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+        
+        pre {
+            background: #f6f8fa;
+            padding: 12px;
+            border-radius: 8px;
+            overflow: auto;
+        }
+        
+        .hint {
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            padding: 12px;
+            border-radius: 8px;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        
+        @media (min-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        a {
+            color: inherit;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>Week 5 — JavaScript Arrays & Objects</h1>
+
+        <div class="hint">
+            <strong>How to test:</strong>
+            <ol>
+                <li>Open this file in a browser.</li>
+                <li>Open DevTools → <strong>Console</strong>.</li>
+                <li>You’ll see demo logs from <code>Array_Object.js</code>. You can also copy/paste the snippets below into the Console.</li>
+            </ol>
+        </div>
+
+        <p>
+            Reference (MDN):
+            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects" target="_blank" rel="noreferrer noopener">Global Objects</a>
+        </p>
+
+        <section>
+            <h2>0) Array vs Object — when to use?</h2>
+            <p>
+                Quick rule: use an <strong>Array</strong> when you care about <strong>order</strong> and you have “a list of items”. Use an
+                <strong>Object</strong> when you care about <strong>meaningful keys</strong> (name, age, price) and you want to model “one thing”.
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Situation</th>
+                        <th>Best choice</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Many items, order matters</td>
+                        <td>Array</td>
+                        <td>cart items, messages, todos</td>
+                    </tr>
+                    <tr>
+                        <td>One item with named fields</td>
+                        <td>Object</td>
+                        <td>user, product, settings</td>
+                    </tr>
+                    <tr>
+                        <td>Many “things”, each thing has fields</td>
+                        <td>Array of Objects</td>
+                        <td><code>[{name, price}, {name, price}]</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>1) Arrays — concept</h2>
+            <p>
+                An <strong>Array</strong> is an ordered list (indexed collection). It’s great when you have “many things of the same kind” (numbers, names, products, messages). You read/write by index (<code>arr[0]</code>), and you often transform or
+                search using methods like <code>map</code>, <code>filter</code>, <code>reduce</code>.
+            </p>
+
+            <div class="grid">
+                <div>
+                    <h3>Common properties/methods</h3>
+                    <ul>
+                        <li><code>length</code> — how many elements</li>
+                        <li><code>push</code>/<code>pop</code> — add/remove at the end</li>
+                        <li><code>shift</code>/<code>unshift</code> — remove/add at the start</li>
+                        <li><code>indexOf</code>, <code>includes</code> — search</li>
+                        <li><code>splice</code> — remove/insert in the middle</li>
+                        <li><code>join</code> — array → string</li>
+                        <li><code>map</code>, <code>filter</code>, <code>reduce</code> — transform, select, summarize</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Real use cases</h3>
+                    <ul>
+                        <li>Shopping cart items (total price with <code>reduce</code>)</li>
+                        <li>Todo list (filter completed / remaining)</li>
+                        <li>Search results (map objects into UI strings)</li>
+                        <li>Data cleanup (trim strings, remove empty values)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Try in Console</h3>
+            <pre><code>// Array basics
+const fruits = ["Apple", "Orange", "Mango"];
+fruits.length;
+fruits[0];
+fruits[fruits.length - 1];
+
+// push / pop
+fruits.push("Banana");
+fruits.pop();
+
+// map / filter / reduce
+const nums = [1, 2, 3, 4, 5];
+nums.map(n =&gt; n + 1);            // [2, 3, 4, 5, 6]
+nums.filter(n =&gt; n % 2);         // odd numbers
+nums.reduce((a, n) =&gt; a + n, 0); // sum</code></pre>
+
+            <h3>Most-used real-world array methods (extra)</h3>
+            <ul>
+                <li><code>includes</code> — quick membership check (e.g., role list contains “admin”)</li>
+                <li><code>find</code>/<code>findIndex</code> — find one matching element (e.g., product by id)</li>
+                <li><code>some</code>/<code>every</code> — validations (any invalid? all valid?)</li>
+                <li><code>slice</code> — non-mutating copy of part of an array (pagination, previews)</li>
+                <li><code>sort</code> — sorting (prices, dates) <em>(mutates array — copy first)</em></li>
+                <li><code>forEach</code> — do something for each element (usually for side-effects/logging)</li>
+            </ul>
+
+            <h3>Mutating vs non-mutating (important in real projects)</h3>
+            <p>
+                Some methods <strong>change the original array</strong> (mutate). Others return a new array. In UI projects (React/Vue), you often prefer non-mutating patterns to avoid bugs.
+            </p>
+            <pre><code>// Mutating examples
+const a = [1, 2, 3];
+a.push(4);     // a changes
+a.splice(1, 1); // a changes
+
+// Non-mutating alternatives
+const b = [1, 2, 3];
+const b2 = [...b, 4];     // new array
+const b3 = b.filter(n =&gt; n !== 2); // new array</code></pre>
+        </section>
+
+        <section>
+            <h2>2) Objects — concept</h2>
+            <p>
+                An <strong>Object</strong> groups related data and behavior using <strong>properties</strong> (values) and <strong>methods</strong> (functions). It’s the natural choice when you want to model a “thing” like a user, product, cat, order,
+                etc.
+            </p>
+
+            <div class="grid">
+                <div>
+                    <h3>Property vs method</h3>
+                    <ul>
+                        <li><strong>Property:</strong> <code>user.name</code>, <code>user.age</code></li>
+                        <li><strong>Method:</strong> <code>user.hello()</code> (often uses <code>this</code>)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Real use cases</h3>
+                    <ul>
+                        <li>User profile object (name, email, roles)</li>
+                        <li>Product object (price, stock, discount method)</li>
+                        <li>API response data (JSON becomes objects/arrays)</li>
+                        <li>Configuration/settings object for apps</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Try in Console</h3>
+            <pre><code>// Object literal
+const user = {
+  name: "Alice",
+  age: 22,
+  hello() {
+    return `Hello, I'm ${this.name}`;
+  },
+};
+
+user.name;
+user["age"];
+user.hello();
+
+// Destructuring
+const { name, age } = user;
+name;
+age;</code></pre>
+
+            <h3>Most-used real-world object helpers</h3>
+            <ul>
+                <li><code>Object.keys(obj)</code> — list property names (build tables, iterate config)</li>
+                <li><code>Object.values(obj)</code> — list property values</li>
+                <li><code>Object.entries(obj)</code> — key/value pairs (common for loops)</li>
+                <li><code>in</code> / <code>hasOwnProperty</code> — check if property exists</li>
+                <li>Spread <code>{ ...obj }</code> — shallow copy / merge (common in state updates)</li>
+            </ul>
+
+            <h3>Try in Console (objects)</h3>
+            <pre><code>const settings = { theme: "dark", lang: "en" };
+
+Object.keys(settings);    // ["theme", "lang"]
+Object.values(settings);  // ["dark", "en"]
+Object.entries(settings); // [["theme","dark"],["lang","en"]]
+
+// Shallow copy / merge
+const updated = { ...settings, lang: "my" };
+updated;
+
+// Safe access pattern
+const app = { user: { profile: { email: "a@b.com" } } };
+app.user?.profile?.email; // optional chaining (avoids crash if missing)</code></pre>
+        </section>
+
+        <section>
+            <h2>3) JSON — concept (data exchange)</h2>
+            <p>
+                <strong>JSON</strong> is a text format for sending data (commonly between browser and server). In JavaScript:
+                <code>JSON.stringify</code> converts objects/arrays → JSON string, and <code>JSON.parse</code> converts JSON string → objects/arrays.
+            </p>
+
+            <h3>Try in Console</h3>
+            <pre><code>const person = { name: "Alice", age: 21 };
+
+const jsonText = JSON.stringify(person);
+jsonText; // '{"name":"Alice","age":21}'
+
+const parsed = JSON.parse(jsonText);
+parsed.name; // "Alice"</code></pre>
+        </section>
+
+        <section>
+            <h2>4) Common mistakes (real-world gotchas)</h2>
+
+            <h3>A) Sorting numbers without a comparator</h3>
+            <p>
+                <code>sort()</code> converts items to strings by default, so numbers can sort “wrong”. Always pass a comparator for numbers.
+            </p>
+            <pre><code>const nums = [2, 10, 3];
+nums.sort();                 // WRONG for numbers: [10, 2, 3]
+[...nums].sort((a, b) =&gt; a - b); // RIGHT: [2, 3, 10]</code></pre>
+
+            <h3>B) Mutating an array by accident</h3>
+            <p>
+                Methods like <code>push</code>, <code>pop</code>, <code>shift</code>, <code>unshift</code>, <code>splice</code>, and <code>sort</code>
+                <strong>change the original array</strong>. In UI/state code, prefer “copy first”.
+            </p>
+            <pre><code>const original = [1, 2, 3];
+
+// mutates original
+original.splice(1, 1);
+
+// non-mutating alternative
+const kept = [1, 2, 3].filter(n =&gt; n !== 2);
+kept; // [1, 3]</code></pre>
+
+            <h3>C) Shallow copy surprise with objects/arrays</h3>
+            <p>
+                Spread (<code>{...obj}</code>, <code>[...arr]</code>) makes a <strong>shallow</strong> copy. Nested objects are still shared.
+            </p>
+            <pre><code>const state = { user: { name: "Alice" } };
+const copy = { ...state };
+copy.user.name = "Bob";
+
+state.user.name; // "Bob" (because nested object is shared)</code></pre>
+
+            <h3>D) <code>this</code> inside object methods</h3>
+            <p>
+                Regular method syntax uses <code>this</code>. Arrow functions don’t bind their own <code>this</code>, so avoid arrow methods when you need <code>this</code>.
+            </p>
+            <pre><code>const user = {
+  name: "Alice",
+  hello() {
+    return `Hi ${this.name}`;
+  },
+};
+
+user.hello();</code></pre>
+
+            <h3>E) Accessing deep properties safely</h3>
+            <p>
+                If a nested value might be missing, optional chaining prevents crashes.
+            </p>
+            <pre><code>const apiResponse = { data: null };
+
+// apiResponse.data.user.name would crash
+apiResponse.data?.user?.name; // undefined (safe)</code></pre>
+        </section>
+    </main>
+
+    <!-- Loads your Week-5 examples. Open DevTools Console to see output. -->
+    <script src="./Array_Object.js"></script>
+</body>
+
+</html>
