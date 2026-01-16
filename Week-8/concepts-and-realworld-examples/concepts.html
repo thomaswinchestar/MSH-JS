@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Week 7 Concepts: Callbacks, Promises, Async/Await</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: #2d3748;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            font-weight: 600;
+        }
+
+        h3 {
+            color: #4a5568;
+            font-size: 1.2em;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        section {
+            margin-bottom: 50px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.05em;
+            color: #4a5568;
+        }
+
+        code {
+            background: #f7fafc;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #e53e3e;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .card {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+
+        ul {
+            margin: 15px 0 0 25px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: #4a5568;
+        }
+
+        strong {
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        /* Event Loop Diagram Styles */
+        .event-loop-diagram {
+            margin: 30px 0;
+            padding: 30px;
+            background: #f7fafc;
+            border-radius: 12px;
+            border: 2px solid #cbd5e0;
+        }
+
+        .diagram-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .diagram-box {
+            padding: 20px 25px;
+            border-radius: 10px;
+            min-width: 160px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .call-stack {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .web-apis {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .microtask-queue {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+
+        .task-queue {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+        }
+
+        .event-loop-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .diagram-title {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .diagram-subtitle {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .diagram-note {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: #edf2f7;
+            border-radius: 8px;
+            color: #4a5568;
+            font-style: italic;
+        }
+
+        .flow-description {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .flow-step {
+            padding: 15px;
+            background: white;
+            border-left: 4px solid #667eea;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .flow-step strong {
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            header {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Week 7 Concepts</h1>
+            <p class="subtitle">Callbacks, Promises, and Async/Await</p>
+        </header>
+
+        <div class="content">
+            <section>
+                <h2>Why we use asynchronous programming</h2>
+                <p>
+                    JavaScript runs on a single call stack. If a long task (network request, file read, timer, or user input) blocks the stack, the UI freezes. Asynchronous programming lets those tasks run in the background while the main thread stays responsive. When the task finishes, JavaScript is notified so it can continue with the result.
+                </p>
+            </section>
+
+    <section>
+        <h2>Callbacks</h2>
+        <p>
+            A callback is a function passed into another function to be called later. It is a common way to handle asynchronous results (for example,
+            <code>setTimeout</code> or older APIs that receive success/error callbacks).
+        </p>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Why use callbacks</h3>
+                <ul>
+                    <li>Simple for small tasks.</li>
+                    <li>Works with many browser APIs (timers, events).</li>
+                    <li>Flexible: you decide what happens after the task finishes.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Why callbacks are used less for complex flows</h3>
+                <ul>
+                    <li>Nested callbacks create “callback hell,” which is hard to read.</li>
+                    <li>Error handling can be scattered across many functions.</li>
+                    <li>Harder to compose multiple async steps.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Pros</h3>
+                <ul>
+                    <li>Lightweight and fast to write.</li>
+                    <li>Direct control over timing.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Cons</h3>
+                <ul>
+                    <li>Callback hell (deep nesting).</li>
+                    <li>Harder error propagation.</li>
+                    <li>Inversion of control (API decides when to call your code).</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Promises</h2>
+        <p>
+            A Promise represents a value that will be available in the future. It has three states: <strong>pending</strong>, <strong>fulfilled</strong>, or <strong>rejected</strong>. You attach handlers with <code>.then</code>,
+            <code>.catch</code>, and <code>.finally</code> to respond when it settles.
+        </p>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Why use promises</h3>
+                <ul>
+                    <li>Cleaner async flow than nested callbacks.</li>
+                    <li>Chainable: one async step after another.</li>
+                    <li>Centralized error handling with <code>.catch</code>.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Pros</h3>
+                <ul>
+                    <li>Readable chains for sequential steps.</li>
+                    <li>Better error propagation.</li>
+                    <li>Combinators like <code>Promise.all</code> for concurrency.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Cons</h3>
+                <ul>
+                    <li>Still can become hard to read with long chains.</li>
+                    <li>Needs careful handling to avoid unhandled rejections.</li>
+                    <li>Understanding timing (microtasks) can be confusing.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Async / Await</h2>
+        <p>
+            <code>async</code> functions always return a Promise. Inside an async function, <code>await</code> pauses execution until a Promise settles, making asynchronous code look like synchronous code. You can use normal
+            <code>try/catch</code> for error handling.
+        </p>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Why use async/await</h3>
+                <ul>
+                    <li>Most readable style for async logic.</li>
+                    <li>Easy error handling with <code>try/catch</code>.</li>
+                    <li>Fits naturally with control flow (loops, conditions).</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Pros</h3>
+                <ul>
+                    <li>Clear, linear code style.</li>
+                    <li>Less nesting than promises.</li>
+                    <li>Works with Promise APIs like <code>Promise.all</code>.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Cons</h3>
+                <ul>
+                    <li>Easy to accidentally run tasks sequentially when you want concurrency.</li>
+                    <li>Requires async context (top-level await needs modules).</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+            <section>
+                <h2>Architecture behind async/await (Event Loop overview)</h2>
+                <p>
+                    JavaScript is single-threaded and uses an event loop to schedule work. Long tasks are offloaded to Web APIs (timers, network, etc.). When they finish, their callbacks are queued and the event loop decides when to run them.
+                </p>
+
+                <div class="event-loop-diagram">
+                    <h3 style="text-align: center; color: #667eea; margin-bottom: 25px;">Event Loop Architecture</h3>
+                    
+                    <div class="diagram-container">
+                        <div class="diagram-box call-stack">
+                            <div class="diagram-title">Call Stack</div>
+                            <div class="diagram-subtitle">JS Execution</div>
+                        </div>
+
+                        <div class="arrow">→</div>
+
+                        <div class="diagram-box web-apis">
+                            <div class="diagram-title">Web APIs</div>
+                            <div class="diagram-subtitle">Timers, Fetch, DOM</div>
+                        </div>
+
+                        <div class="arrow">→</div>
+
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <div class="diagram-box microtask-queue">
+                                <div class="diagram-title">Microtask Queue</div>
+                                <div class="diagram-subtitle">Promises, async/await</div>
+                            </div>
+                            <div class="diagram-box task-queue">
+                                <div class="diagram-title">Task Queue</div>
+                                <div class="diagram-subtitle">Callbacks, Events</div>
+                            </div>
+                        </div>
+
+                        <div class="arrow">→</div>
+
+                        <div class="diagram-box event-loop-box">
+                            <div class="diagram-title">Event Loop</div>
+                            <div class="diagram-subtitle">Orchestrator</div>
+                        </div>
+                    </div>
+
+                    <div class="diagram-note">
+                        💡 The Event Loop prioritizes <strong>Microtasks</strong> (Promise handlers, await continuations) before <strong>Tasks</strong> (setTimeout, DOM events)
+                    </div>
+                </div>
+
+                <div class="flow-description">
+                    <div class="flow-step">
+                        <strong>Call Stack:</strong> Runs one task at a time, executing JavaScript code synchronously.
+                    </div>
+                    <div class="flow-step">
+                        <strong>Web APIs:</strong> Browser features that handle async operations in the background (timers, network requests, etc.).
+                    </div>
+                    <div class="flow-step">
+                        <strong>Microtask Queue:</strong> High-priority queue for Promise handlers (<code>.then</code>, <code>.catch</code>) and code after <code>await</code>.
+                    </div>
+                    <div class="flow-step">
+                        <strong>Task Queue:</strong> Regular queue for callbacks from <code>setTimeout</code>, DOM events, and other async operations.
+                    </div>
+                    <div class="flow-step">
+                        <strong>Event Loop:</strong> When the call stack is empty, it processes all microtasks first, then takes one task from the task queue.
+                    </div>
+                </div>
+
+                <p style="margin-top: 25px;">
+                    Because async/await is built on Promises, the code after each <code>await</code> runs as a microtask. This is why it often executes before timer callbacks that are waiting in the task queue.
+                </p>
+            </section>
+        </div>
+    </div>
+</body>
+
+</html>

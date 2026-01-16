@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS OOP</title>
+</head>
+
+<body>
+    <script>
+        //Object Oriented Programming
+        //Propertys and Methods
+        // let user = {
+        //     name: "John",
+        //     age: 30,
+        //     greet: function() {
+        //         console.log("Hello, " + this.name);
+        //     }
+        // };
+
+        //Imperative Programming
+        //Procedure, Functions - Procedural Programming
+        //Functional Programming
+        //Pure Functions, Higher Order Functions
+
+        //myFunc(arg1, arg2);
+        //myFunc(5, 10);
+        //Side Effects
+        // Pure Function - Side Effect Free
+
+        //push(), pop(), splice() - Mutating Methods, Impure Functions
+
+        //map(), filter(), reduce() - Non-Mutating Methods, Pure Functions
+
+
+        //Imperative, Procedural, OOP, Functional
+
+
+        //Object Constructor, Object Literal, Classes
+        //Class - Object Template
+        // class Person {
+        //     //Constructor Method
+        //     constructor(name, age) {
+        //         this.name = name;
+        //         this.age = age;
+        //     }
+
+        //     //Method
+        //     greet() {
+        //         console.log("Hello, " + this.name);
+        //     }
+        // }
+        // //Creating Object from Class
+        // let person1 = new Person("Alice", 25);
+        // let person2 = new Person("Bob", 30);
+
+        // person1.greet();
+        // person2.greet();
+
+        // let car = {
+        //     color: "Blue",
+        //     wheels: 4,
+        //     drive: function() {
+        //         console.log("This car is driving");
+        //     }
+        // };
+
+        // class Car {
+        //     color = "Red";
+        //     wheels = 4;
+        //     drive() {
+        //         console.log("This car is driving");
+        //     }
+        // }
+
+        // let toyota = new Car();
+        // toyota.drive();
+        // toyota.color;
+        // toyota.wheels;
+
+        //static Property and Method
+        // class Calculator {
+        //     static PI = 3.14;
+
+        //     static add(a, b) {
+        //         return a + b;
+        //     }
+        // }
+
+        // Calculator.PI;
+        // console.log(Calculator.PI);
+        // Calculator.add(5, 10);
+        // console.log(Calculator.add(5, 10));
+
+        //Access Control Modifiers
+        // Public, Private, Protected, Static
+
+        //pseudocode
+        // class Car {
+        //     private hp = 150;
+        //     public color = "Red";
+
+        //     static info() {
+        //         console.log(`Horse Power: ${this.hp}`); // Error: Cannot access private property 'hp' from outside class 'Car`) 
+        //     }
+        // }
+
+        // let car = new Car(); //instiantiate
+        // car.hp = 200; // Error: Cannot access private property 'hp' from outside class 'Car'
+        // Car.info(); // Horse Power: 150, // Encapsulation
+
+
+        // class Car {
+        //     #hp = 150; // Private field
+        //     color = "Color";
+
+        //     constructor(hp) {
+        //         if (hp !== undefined) {
+        //             this.#hp = hp;
+        //         }
+        //     }
+
+        //     // Public getter/setter (so you can read/update after creating the object)
+        //     get hp() {
+        //         return this.#hp;
+        //     }
+
+        //     set hp(value) {
+        //         this.#hp = value;
+        //     }
+
+        //     // Instance method can access instance private field directly
+        //     info() {
+        //         console.log(`Horse Power: ${this.#hp}`);
+        //     }
+
+        //     // Static method can't use "this.#hp" because "this" is the class, not an instance.
+        //     // Pass an instance in instead.
+        //     static info(carInstance) {
+        //         console.log(`Horse Power: ${carInstance.#hp}`);
+        //     }
+        // }
+
+        // let car = new Car();
+        // car.hp = 200; // OK (uses setter)
+
+        // car.info(); // Horse Power: 200
+        // Car.info(car); // Horse Power: 200
+
+
+        //Constructor Method
+        // class Dog {
+        //     constructor(name) {
+        //         this.name = name;
+        //     }
+
+        //     run() {
+        //         console.log(`${this.name} is running`);
+        //     }
+        // }
+
+        // let dog1 = new Dog("Bobby");
+        // let dog2 = new Dog("Rambo");
+
+        // dog1.run();
+        // dog2.run();
+
+        //Inheritance
+        // class Animal {
+        //     constructor(name) {
+        //         this.name = name;
+        //     }
+
+        //     run() {
+        //         console.log(`${this.name} is running`);
+        //     }
+        // }
+
+        // class Dog extends Animal {
+        //     bark() {
+        //         console.log(`${this.name} is barking`);
+        //     }
+        // }
+
+        // let milo = new Dog("Milo");
+        // milo.bark();
+
+        // class Cat extends Animal {
+        //     constructor(name, color) {
+        //         super(name);
+        //         this.color = color;
+        //     }
+
+        //     meow() {
+        //         console.log(`${this.name} is meowing`);
+        //     }
+        // }
+
+        // let cat = new Cat("Shwe War", "Yellow");
+        // cat.meow();
+
+        //Object-Oriented Design Patterns
+        // Singleton, Factory, Observer, MVC, MVVM
+    </script>
+</body>
+
+</html>

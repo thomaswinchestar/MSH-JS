@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    //API Error(500/Network/Timework) handling in Promises and Async/Await //Server down or URL wrong //Internet disconnected //API 500 Error
+    <script>
+        async function fetchWithErrorHandling(url) {
+            try {
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                throw new Error('Network error or server unreachable!');
+            }
+        }
+
+        async function loadUsers() {
+            try {
+                const users = await fetchWithErrorHandling('https://jsonplaceholder.typicode.com/users');
+                console.log(users);
+            } catch (error) {
+                console.error('Error fetching users:', error.message);
+            }
+        }
+        loadUsers();
+    </script>
+</body>
+
+</html>

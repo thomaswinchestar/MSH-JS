@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+</head>
+
+<body>
+    <h1>User List</h1>
+    <button id="loadBtn">Load Users</button>
+
+    <p id="status">
+        <p/>
+        <ul id="userList">
+        </ul>
+
+
+        <script>
+            function fetchUsers() {
+                return new Promise((resolve, reject) => {
+                    fetch('https://jsonplaceholder.typicode.com/users')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok ' + response.statusText);
+                            }
+                            return response.json();
+                        })
+                        .then(data => resolve(data))
+                        .catch(error => reject(error));
+                })
+            }
+
+            document.getElementById('loadBtn').addEventListener('click', () => {
+                const status = document.getElementById('status');
+                const list = document.getElementById('userList');
+
+                status.textContent = 'Loading...';
+                list.innerHTML = '';
+
+                fetchUsers()
+                    .then(users => {
+                        status.textContent = '';
+                        users.forEach(user => {
+                            const li = document.createElement('li');
+                            li.textContent = user.id;
+                            li.textContent += ` (${user.name})`;
+                            li.textContent += ` (${user.phone})`;
+                            li.textContent += ` (${user.email})`;
+                            list.appendChild(li);
+                        })
+                    })
+                    .catch(error => {
+                        status.textContent = error;
+                    })
+            });
+        </script>
+</body>
+
+</html>

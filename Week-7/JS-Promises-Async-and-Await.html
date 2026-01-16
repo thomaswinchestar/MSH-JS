@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Promises & Async, Await</title>
+</head>
+
+<body>
+    // JS Promises & Async, Await // JS -> Single-Threaded // Multi-Threaded
+
+    <script>
+        // console.log(1);
+        // console.log(2);
+        // setTimeout(() => {
+        //     console.log(3);
+        // }, 1000);
+        // console.log(4);
+
+        //1
+        //2
+        //1sec wait
+        //3
+        //4
+
+        //1
+        //2
+        //4
+        //3
+
+        //Callback Hell
+        // function add(a, b, callback) {
+        //     setTimeout(() => {
+        //         let result = a + b;
+        //         callback(result);
+        //     }, 1000);
+        // }
+        // console.log("some processess")
+        // add(1, 2, (result) => {
+        //     console.log(result);
+        //     add(result, 3, (result) => {
+        //         console.log(result);
+        //         add(result, 4, (result) => {
+        //             console.log(result);
+        //         });
+        //     });
+        // });
+        // console.log("more processess")
+        //Callback Hell Ends
+
+        //Promises -> Pending, Resolved, Rejected
+        // function add1000() {
+        //     let result = 0;
+
+        //     for (let i = 1; i <= 1000; i++) {
+        //         result += i;
+        //     }
+
+        //     return result;
+        // }
+
+        //Promise version of add1000
+        // function add1000later() {
+        //     return new Promise((resolve, reject) => {
+        //         let result = add1000();
+
+        //         if (result) resolve(result);
+        //         else reject("Something went wrong");
+        //     })
+        // }
+
+        //Improved Promise version of add1000 with async, await
+        // async function add1000later() {
+        //     let result = await add1000();
+        //     console.log(result);
+        // }
+
+        // console.log("some processess")
+        // add1000later();
+        // //Promise call
+        // // add1000later()
+        // //     .then(result => result + 1000)
+        // //     .then(result => console.log(result))
+        // //     .catch(() => console.log(" Error Occurred"));
+        // console.log("more processess")
+
+        //Asynchronous
+        //async, await
+
+
+        //notes - thread CPU vs IO(Input/Output)
+        //CPU - Calculations, Loop, Conditions, Function calls - CPU Bound
+        //IO - File, Network requests, Database, Timer(SetTimeout) - IO Bound
+        // JS Runtime Architecture - Call Stack(CPU), Web APIs(Browser/OS), Callback Queue, Event Loop
+
+        // console.log('Start')
+        // fetch('/api/users')
+        // console.log('End')
+
+        //Non-Blocking IO
+    </script>
+
+
+</body>
+
+</html>
